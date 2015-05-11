@@ -63,6 +63,7 @@ $(function() {
         return this.playerTurn;
   };
 
+
  //this method call other methds to check for winner
   Game.prototype.checkWinner = function(playerT) {
     var winnerResult = false;
@@ -76,6 +77,7 @@ $(function() {
       return winnerResult;
   }
 
+
   //this method checks each condition 
   Game.prototype.eachOption = function(num1,num2,num3,playerT) {
     var foundWinner = false; 
@@ -86,10 +88,12 @@ $(function() {
 }
 
 
+
  //this method gets the value of the div elemnt we are looking at
   Game.prototype.eachBox = function(num) {
        return $("#box" + num).html();
   }
+
 
 
  //this method resets the board when the reset button is clicked
@@ -100,6 +104,8 @@ $(function() {
     });
 
   }
+
+  
 //the game startes here
   var game = new Game();
   game.init();
