@@ -2,25 +2,58 @@
 $(function() {
 
 
-  //var winningCombinations = [[1,2,3],[4,5,6],[7,8,9],
-                             //[1,4,7],[2,5,8],[3,6,9],
-                             //[1,5,9],[3,5,7]]
   
   function Game() {
 
     this.playerTurn = "O";
-    this.$boxes = $('.boxes');
+    this.$boxes = $('.box');
     this.$reset = $('#reset');
-  
-    //Create a new instance of player 1
-    //this.player1 = ...
 
-    //Do the same for a player 2
-    //this.player2 = ...
+
+  
     
-    //Create the board
-    //this.board = ...
   }
+
+ 
+
+
+  // `Game.prototype.init` kicks off a new game with a board and two players
+  Game.prototype.init = function() {
+
+    var that = this;
+   
+     //for (var i=0; i <9; i++) {
+
+      this.$boxes.click(function() {
+      var $turn = $(event.target);
+      
+        if ($turn.html() === "&nbsp;") {
+          console.log("hello");
+          that.playerTurn = that.switchPlayer(); 
+          console.log(that.playerTurn);
+          if (that.playerTurn === "X") {
+            $turn.html("X");
+            console.log("hey");
+            if (that.checkWinner(that.playerTurn)) {
+               alert(that.playerTurn + " WINS!!!"); }
+          
+          } else { 
+              $turn.html("O");
+              if (that.checkWinner(that.playerTurn)) {
+                alert(that.playerTurn + " WINS!!!");}
+            }
+
+
+        }
+
+          
+        });
+
+        //}
+
+
+      }
+
 
   Game.prototype.switchPlayer = function() {
     if (this.playerTurn === "O") {
@@ -28,102 +61,8 @@ $(function() {
     } else {
       this.playerTurn = "O"
     }
+    return this.playerTurn;
   };
-
-  // Remember: prototypes are shared functions between all game instances
- /* Game.prototype.nextPlayer = function() {
-    //Switch players
-   if (this.playerTurn === "O" ){
-      this.playerTurn = "X";
-    } else {
-      this.playerTurn = "O";
-    }
-
-    return this.playerTurn; 
-  };*/
-
-  // `Game.prototype.init` kicks off a new game with a board and two players
-  Game.prototype.init = function() {
-    
-    for (var i=0; i <9; i++) {
-
-      this.$boxes.eq(i).on("click", function() {
-
-        if ($(this).html() === "&nbsp;") {
-          this.playerturn = this.switchPlayer(); 
-          if (this.playerTurn === "X") {
-            $(this).html("X");
-            console.log("hey");
-            if (this.checkWinner(this.playerTurn)) {
-               alert(this.playerTurn + " WINS!!!");
-            }
-          } else { 
-              $(this).html("O");
-              if (this.checkWinner(this.playerTurn)) {
-                alert(this.playerTurn + " WINS!!!");
-              }
-            }
-          }
-          
-        });
-        };
-
-
-
-
-      };
-    
-    /*this.$boxes.click(function() {
-      var $turn = $(event.target);
-
-      if ($turn.html() === "&nbsp;") {
-      if(this.playerTurn === "X") {
-         $turn.html("X");
-          if (this.checkWinner(this.playerTurn)) {
-            alert(this.playerTurn + " WINS!!!");
-          
-          }
-
-      this.playerTurn = "O";
-      } else {
-        $turn.html("O");
-          if (this.checkWinner(this.playerTurn)) {
-            alert(this.playerTurn + " WINS!!!");
-
-          }
-      }
-      
-  }
-      
-
-    });
-
-  
-    //
-  };
-
-  /*Game.prototype.board = function() {
-
- if ($turn.html() === "&nbsp;") {
-      if(this.playerTurn === "X") {
-         $turn.html("X");
-          if (this.checkWinner(this.playerTurn)) {
-            alert(this.playerTurn + " WINS!!!");
-          
-          }
-
-      this.playerTurn = "O";
-      } else {
-        $turn.html("O");
-          if (this.checkWinner(this.playerTurn)) {
-            alert(this.playerTurn + " WINS!!!");
-
-          }
-      }
-      
-  }
-
-  */
 
   Game.prototype.checkWinner = function(playerT) {
       var winnerResult = false;
