@@ -1,71 +1,71 @@
 
 $(function() {
 
-
-  
+  //Game
   function Game() {
 
-    this.playerTurn = "O";
+    this.playerTurn = "X";
     this.$boxes = $('.box');
     this.$reset = $('#reset');
-
-
-  
+    this.reset();
     
   }
 
  
 
-
-  // `Game.prototype.init` kicks off a new game with a board and two players
+//this method initilaizes the game and calls various other methods like
+//switchPlayer() and checckWinner() inorder to execute the game
   Game.prototype.init = function() {
-
-    var that = this;
-   
-     //for (var i=0; i <9; i++) {
-
-      this.$boxes.click(function() {
-      var $turn = $(event.target);
       
-        if ($turn.html() === "&nbsp;") {
-          console.log("hello");
-          that.playerTurn = that.switchPlayer(); 
-          console.log(that.playerTurn);
-          if (that.playerTurn === "X") {
-            $turn.html("X");
-            console.log("hey");
-            if (that.checkWinner(that.playerTurn)) {
-               alert(that.playerTurn + " WINS!!!"); }
-          
-          } else { 
-              $turn.html("O");
+      var that = this;
+      
+      this.$boxes.click(function() {   //click event
+        var $boxClicked = $(event.target);
+        
+        that.reset();
+        //condition to cenk if box is empty / the play value is X
+        if ($boxClicked.html() === "&nbsp;" && that.playerTurn === "X" ) {
+           
+            $boxClicked.html("X"); //setting html value of the box to X
+            $boxClicked.css("background-color", "#F0F8FF"); //setting color for box
+              
+              //calling checkWinner and sending X as a value 
               if (that.checkWinner(that.playerTurn)) {
-                alert(that.playerTurn + " WINS!!!");}
-            }
+                  alert(that.playerTurn + " WINS!!!");
+              }
 
+              that.playerTurn = that.switchPlayer(); /*calling switchPlayer inorder to 
+                                                      alternate between playerX and playerO
+                                                    */
+           //now checking conditions for playerO
+        } else if($boxClicked.html() === "&nbsp;" && that.playerTurn === "O") {
+              
+              $boxClicked.html("O");
+              $boxClicked.css("background-color", "#FFFACD");
+                  if (that.checkWinner(that.playerTurn)) {
+                      alert(that.playerTurn + " WINS!!!");
+                  
 
+                  }
+                  that.playerTurn = that.switchPlayer(); 
         }
+   });
 
-          
-        });
+}
 
-        //}
-
-
-      }
-
-
+  //this method switched the players when called
   Game.prototype.switchPlayer = function() {
-    if (this.playerTurn === "O") {
-      this.playerTurn = "X"
-    } else {
-      this.playerTurn = "O"
-    }
-    return this.playerTurn;
+      if (this.playerTurn === "O") {
+        this.playerTurn = "X"
+      } else {
+        this.playerTurn = "O"
+      }
+        return this.playerTurn;
   };
 
+ //this method call other methds to check for winner
   Game.prototype.checkWinner = function(playerT) {
-      var winnerResult = false;
+    var winnerResult = false;
     if(this.eachOption(1,2,3,playerT) || this.eachOption(4,5,6,playerT) ||
        this.eachOption(7,8,9,playerT) || this.eachOption(1,4,7,playerT) ||
        this.eachOption(2,5,8,playerT) || this.eachOption(3,6,9,playerT) ||
@@ -76,130 +76,41 @@ $(function() {
       return winnerResult;
   }
 
-  
-  Game.prototype.eachOption = function(a,b,c,playerT) {
+  //this method checks each condition 
+  Game.prototype.eachOption = function(num1,num2,num3,playerT) {
     var foundWinner = false; 
-    if (this.eachBox(a) === playerT && this.eachBox(b) === playerT && this.eachBox(c) === playerT) {
-
+    if (this.eachBox(num1) === playerT && this.eachBox(num2) === playerT && this.eachBox(num3) === playerT) {
         foundWinner = true;
     }
-
-       return foundWinner; 
-  }
-
+        return foundWinner; 
+}
 
 
+ //this method gets the value of the div elemnt we are looking at
   Game.prototype.eachBox = function(num) {
-       return $("#box" + num).html()
+       return $("#box" + num).html();
   }
 
 
+ //this method resets the board when the reset button is clicked
+  Game.prototype.reset =function() {
+  
+     this.$reset.click(function(event) {
+      location.reload();
+    });
 
-
- /* Game.prototype.Reset =function() {
-
-  }*/
-
+  }
+//the game startes here
   var game = new Game();
   game.init();
 
 });
 
-
-/*
-
 /*
 
 
-  Board.prototype.checkRow = function(a, b, c, move) {
-    var result = false;
-    if (this.getBox(a) === move && this.getBox(b) === move && this.getBox(c) === move) {
-      result = true;
-    }
-    return result;
-  }
-
-  Board.prototype.getBox = function(number) {
-    return $("#cell" + number).html();
-  }
-
-*/
-
-  // A starter Player constructor.
 
 
-  // A starter Board constructor.
-  /*function Board($turn) {
-
-    this.$reset = $('#reset');
-
-    if ($turn.html() === "&nbsp;") {
-      if(this.playerTurn === "X") {
-         $turn.html("X");
-          if (this.checkWinner(this.playerTurn)) {
-            alert(this.playerTurn + " WINS!!!");
-          
-          }
-
-      this.playerTurn = "O";
-
-      } else {
-        $turn.html("O");
-
-          if (this.checkWinner(this.playerTurn)) {
-            alert(this.playerTurn + " WINS!!!");
-
-          }
-      }
-      
-    }
-
-    if (playerTurn === "X") {
-      this.$turn
-
-
-    }
-
-    //Tracks the cells of the board instance
-    //this.$cells = ...
-
-    //Store any other properties that board may have below, such as a reset option
-  };
-
-  Board.prototype.Reset() {
-/*
-reset.addEventListener("click", function(event){
-     for (i = 0; i < 9; i++) {
-      boxNumber = document.querySelector("#box" + i);
-      
-        boxNumber.innerHTML = "&nbsp;" //String.fromCharCode(8)
-        boxNumber.style.backgroundColor = "white";
-     
-*/
-
-/* this.$reset.click(function() {
-   var $t = $(event.target);
-    for(var i = 0;i < 9; i++) {
-
-
-
-
-    }
-
-
-
-
-  } */
-
-
-/*
-  // Start the game!
-  var game = new Game();
-  game.init();
-*/
-
-
-/*
   function checkForWinner(object) {
 
    var winnerCombinations = [[1,2,3],[4,5,6],[7,8,9], //row wins
